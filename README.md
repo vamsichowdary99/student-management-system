@@ -6,6 +6,15 @@ placement interviews. It's deliberately beginner-friendly: no Kubernetes, Terraf
 Jenkins, Redis, or microservices -- just a clean, well-commented monolith that's
 easy to explain end-to-end.
 
+## Live Demo
+
+Deployed on AWS EC2, auto-updated by GitHub Actions on every push to `main`:
+
+**http://13.63.237.55:5000** (login: `admin` / `admin123` -- demo credentials, see below)
+
+Note: this is the instance's public IP, which changes if the instance is stopped and
+restarted. An Elastic IP would pin it permanently (see Future Improvements).
+
 ## Features
 
 - Admin authentication (Flask server-side sessions, `werkzeug` password hashing)
@@ -206,6 +215,7 @@ the app is running.)_
 
 ## Future Improvements
 
+- Allocate an Elastic IP so the live demo URL doesn't change on instance restart
 - Pagination for large student lists
 - Role-based access (multiple admin permission levels)
 - A reverse proxy (nginx) in front of Gunicorn with HTTPS
