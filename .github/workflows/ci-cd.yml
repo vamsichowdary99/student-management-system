@@ -1,0 +1,75 @@
+name: CI/CD
+
+# Runs on every push/PR to main so a bad merge is caught before it can reach
+# main, and (for direct pushes to main) deploys automatically afterward.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Lint with flake8
+        run: flake8 app run.py tests
+
+      - name: Run tests
+        run: pytest
+
+  build:
+    needs: lint-and-test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t student-mgmt-web:${{ github.sha }} .
+
+  deploy:
+    needs: build
+    # Only deploy on a real push to main (not PRs). Whether EC2 secrets
+    # actually exist yet is checked inside the job below -- GitHub Actions
+    # doesn't allow referencing `secrets` directly in a job-level `if:`.
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check EC2 secrets are configured
+        id: check_secrets
+        env:
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+        run: |
+          if [ -z "$EC2_HOST" ]; then
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Deploy to EC2 over SSH
+        if: steps.check_secrets.outputs.configured == 'true'
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd ~/student-management-system
+            git pull origin main
+            docker compose up -d --build
+
+# Required repo secrets (Settings > Secrets and variables > Actions), set
+# once the EC2 instance exists -- see README.md for the full runbook:
+#   EC2_HOST     public IP or DNS name of the EC2 instance
+#   EC2_USER     SSH username (e.g. "ubuntu")
+#   EC2_SSH_KEY  private key (PEM contents) matching a key authorized on the instance
