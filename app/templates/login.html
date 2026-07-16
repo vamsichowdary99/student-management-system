@@ -1,16 +1,22 @@
 {% extends "base.html" %}
-{% block title %}Login{% endblock %}
+{% block title %}Sign in{% endblock %}
 {% block content %}
-<div class="card login-card">
-    <h1>Admin Login</h1>
-    <form method="post">
-        <label for="username">Username</label>
-        <input type="text" id="username" name="username" required autofocus>
-
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password" required>
-
-        <button type="submit">Log in</button>
-    </form>
+<div class="admission">
+    <div class="admission-card">
+        <p class="eyebrow">Registrar's Office &middot; Staff Access</p>
+        <h1><em>Admit</em> one administrator</h1>
+        <form method="post">
+            <div class="field">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required autofocus autocomplete="username">
+            </div>
+            <div class="field">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required autocomplete="current-password">
+            </div>
+            <button type="submit" class="stamp">Enter</button>
+        </form>
+    </div>
+    <p class="admission-note">Records are confidential. Access is logged.</p>
 </div>
 {% endblock %}

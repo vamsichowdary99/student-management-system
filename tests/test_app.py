@@ -27,7 +27,8 @@ def test_health_endpoint(client):
 def test_login_page_renders(client):
     response = client.get("/login")
     assert response.status_code == 200
-    assert b"Admin Login" in response.data
+    assert b'name="username"' in response.data
+    assert b'name="password"' in response.data
 
 
 def test_students_page_requires_login(client):

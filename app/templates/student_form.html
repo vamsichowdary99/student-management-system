@@ -1,33 +1,48 @@
 {% extends "base.html" %}
-{% block title %}{{ "Edit Student" if mode == "edit" else "Add Student" }}{% endblock %}
+{% block title %}{{ "Edit Record" if mode == "edit" else "New Record" }}{% endblock %}
 {% block content %}
-<div class="card">
-    <h1>{{ "Edit Student" if mode == "edit" else "Add Student" }}</h1>
-    <form method="post">
-        <label for="full_name">Full Name</label>
-        <input type="text" id="full_name" name="full_name" value="{{ student.full_name if student else '' }}" required>
+<div class="form-card">
+    <p class="eyebrow">{{ "Amending Record" if mode == "edit" else "New Enrollment" }}</p>
+    <h1>{% if mode == "edit" %}<em>Edit</em> Student{% else %}<em>Add</em> Student{% endif %}</h1>
+    <form method="post" class="ledger-form">
+        <div class="field">
+            <label for="full_name">Full name</label>
+            <input type="text" id="full_name" name="full_name" value="{{ student.full_name if student else '' }}" required>
+        </div>
 
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" value="{{ student.email if student else '' }}" required>
+        <div class="field">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" value="{{ student.email if student else '' }}" required>
+        </div>
 
-        <label for="phone">Phone</label>
-        <input type="text" id="phone" name="phone" value="{{ student.phone if student else '' }}">
+        <div class="field">
+            <label for="phone">Phone</label>
+            <input type="text" id="phone" name="phone" value="{{ student.phone if student else '' }}">
+        </div>
 
-        <label for="dept_id">Department</label>
-        <select id="dept_id" name="dept_id" required>
-            <option value="">-- Select --</option>
-            {% for d in departments %}
-            <option value="{{ d.dept_id }}" {% if student and student.dept_id|string == d.dept_id|string %}selected{% endif %}>{{ d.dept_name }}</option>
-            {% endfor %}
-        </select>
+        <div class="field-row">
+            <div class="field">
+                <label for="dept_id">Department</label>
+                <select id="dept_id" name="dept_id" required>
+                    <option value="">Select&hellip;</option>
+                    {% for d in departments %}
+                    <option value="{{ d.dept_id }}" {% if student and student.dept_id|string == d.dept_id|string %}selected{% endif %}>{{ d.dept_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
 
-        <label for="year">Year</label>
-        <input type="number" id="year" name="year" min="1" max="5" value="{{ student.year if student else '' }}" required>
+            <div class="field field-narrow">
+                <label for="year">Year</label>
+                <input type="number" id="year" name="year" min="1" max="5" value="{{ student.year if student else '' }}" required>
+            </div>
 
-        <label for="cgpa">CGPA</label>
-        <input type="number" id="cgpa" name="cgpa" min="0" max="10" step="0.01" value="{{ student.cgpa if student else '' }}">
+            <div class="field field-narrow">
+                <label for="cgpa">CGPA</label>
+                <input type="number" id="cgpa" name="cgpa" min="0" max="10" step="0.01" value="{{ student.cgpa if student else '' }}">
+            </div>
+        </div>
 
-        <button type="submit">Save</button>
+        <button type="submit" class="stamp">Save record</button>
     </form>
 </div>
 {% endblock %}

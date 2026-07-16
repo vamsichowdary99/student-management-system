@@ -1,24 +1,31 @@
 {% extends "base.html" %}
-{% block title %}Students{% endblock %}
+{% block title %}Student Records{% endblock %}
 {% block content %}
 <div class="page-header">
-    <h1>Students</h1>
-    <a class="btn" href="{{ url_for('students.new_student') }}">+ Add Student</a>
+    <div>
+        <p class="eyebrow">Enrollment Ledger</p>
+        <h1>Student Records</h1>
+    </div>
+    <a class="stamp" href="{{ url_for('students.new_student') }}">+ New Record</a>
 </div>
 
-<form class="search-form" method="get">
-    <input type="text" name="q" value="{{ query }}" placeholder="Search by name or email">
-    <button type="submit">Search</button>
-    {% if query %}<a href="{{ url_for('students.list_students') }}">Clear</a>{% endif %}
+<form class="search-slip" method="get">
+    <label for="q">Search by name or email</label>
+    <div class="search-slip-row">
+        <input type="text" id="q" name="q" value="{{ query }}" placeholder="e.g. Priya Nair">
+        <button type="submit">Search</button>
+        {% if query %}<a class="clear" href="{{ url_for('students.list_students') }}">Clear</a>{% endif %}
+    </div>
 </form>
 
-<table class="data-table">
+<div class="ledger-wrap">
+<table class="ledger">
     <thead>
         <tr>
             <th>Name</th>
             <th>Email</th>
             <th>Department</th>
-            <th>Year</th>
+            <th>Yr</th>
             <th>CGPA</th>
             <th></th>
         </tr>
@@ -26,11 +33,11 @@
     <tbody>
         {% for s in students %}
         <tr>
-            <td><a href="{{ url_for('students.view_student', student_id=s.student_id) }}">{{ s.full_name }}</a></td>
-            <td>{{ s.email }}</td>
-            <td>{{ s.dept_name }}</td>
-            <td>{{ s.year }}</td>
-            <td>{{ s.cgpa }}</td>
+            <td><a class="record-link" href="{{ url_for('students.view_student', student_id=s.student_id) }}">{{ s.full_name }}</a></td>
+            <td class="mono muted">{{ s.email }}</td>
+            <td><span class="tag tag-{{ s.dept_id % 5 }}">{{ s.dept_name }}</span></td>
+            <td class="mono">{{ s.year }}</td>
+            <td class="mono">{{ "%.2f"|format(s.cgpa) if s.cgpa is not none else "—" }}</td>
             <td class="actions">
                 <a href="{{ url_for('students.edit_student', student_id=s.student_id) }}">Edit</a>
                 <form method="post" action="{{ url_for('students.delete_student', student_id=s.student_id) }}" onsubmit="return confirm('Delete this student?');">
@@ -39,8 +46,17 @@
             </td>
         </tr>
         {% else %}
-        <tr><td colspan="6">No students found.</td></tr>
+        <tr class="empty-row">
+            <td colspan="6">
+                {% if query %}
+                    No records match &ldquo;{{ query }}&rdquo;. Try a different name or email.
+                {% else %}
+                    No students yet. Add the first record to get started.
+                {% endif %}
+            </td>
+        </tr>
         {% endfor %}
     </tbody>
 </table>
+</div>
 {% endblock %}

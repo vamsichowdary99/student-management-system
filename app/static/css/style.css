@@ -1,4 +1,33 @@
-/* Simple, clean styling -- no framework, kept beginner-readable on purpose. */
+/* ==========================================================================
+   Design system: "Registrar's Office"
+   --------------------------------------------------------------------------
+   This is a records-keeping tool, so the visual language borrows from the
+   artifacts of academic record-keeping itself -- ledgers, transcripts,
+   admission slips, wax-seal stamps -- rather than a generic SaaS dashboard
+   look. Paper-white surfaces, an ink/oxblood/brass palette, a serif for
+   editorial moments (Newsreader italic reads like a registrar's own
+   annotation), a plain grotesk for interface chrome, and a monospace for
+   tabular data (IDs, CGPA, dates) so records visually line up like a ledger.
+   ========================================================================== */
+
+:root {
+    --paper: #fdfcf9;
+    --paper-raised: #ffffff;
+    --ink: #1c2126;
+    --ink-soft: #6b6f76;
+    --crest: #7c2d2d;
+    --crest-dark: #5f2222;
+    --brass: #a9812e;
+    --brass-text: #8a6a1f;
+    --line: #e4e0d8;
+    --success: #3f6b4f;
+    --success-bg: #eef3ef;
+    --error-bg: #f8ece9;
+
+    --font-display: "Newsreader", "Iowan Old Style", serif;
+    --font-body: "IBM Plex Sans", -apple-system, Segoe UI, sans-serif;
+    --font-mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
 
 * {
     box-sizing: border-box;
@@ -6,187 +35,527 @@
 
 body {
     margin: 0;
-    font-family: -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-    background: #f5f6f8;
-    color: #1f2430;
+    font-family: var(--font-body);
+    background: var(--paper);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
 }
 
-.topbar {
+a {
+    color: var(--crest);
+}
+
+/* -------------------------------------------------------------------- */
+/* Letterhead                                                            */
+/* -------------------------------------------------------------------- */
+
+.letterhead {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 2rem;
-    background: #1f2430;
-    color: #fff;
+    padding: 1.1rem 2rem;
+    border-bottom: 1px solid var(--line);
+    background: var(--paper-raised);
 }
 
-.topbar .brand {
-    color: #fff;
-    text-decoration: none;
-    font-weight: 600;
-}
-
-.topbar nav {
+.seal-mark {
     display: flex;
     align-items: center;
-    gap: 1rem;
-}
-
-.topbar nav a {
-    color: #cfd3dc;
+    gap: 0.7rem;
     text-decoration: none;
+    color: var(--ink);
 }
 
-.topbar nav a:hover {
-    color: #fff;
+.seal {
+    color: var(--brass);
+    flex-shrink: 0;
 }
+
+.wordmark {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--ink);
+}
+
+.wordmark em {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 1.1rem;
+    margin-right: 0.15rem;
+}
+
+.account-nav {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+}
+
+.account-nav a {
+    color: var(--ink-soft);
+    text-decoration: none;
+    border-bottom: 1px solid var(--line);
+}
+
+.account-nav a:hover {
+    color: var(--crest);
+    border-color: var(--crest);
+}
+
+/* -------------------------------------------------------------------- */
+/* Layout                                                                 */
+/* -------------------------------------------------------------------- */
 
 .container {
-    max-width: 960px;
-    margin: 2rem auto;
-    padding: 0 1.5rem;
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 4rem;
 }
 
-.card {
-    background: #fff;
-    border-radius: 8px;
-    padding: 2rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-    max-width: 480px;
+.eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--brass-text);
+    margin: 0 0 0.35rem;
 }
 
-.login-card {
-    margin: 3rem auto;
+h1 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 2rem;
+    margin: 0 0 0.25rem;
+    color: var(--ink);
 }
 
-.page-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
+h1 em {
+    font-style: italic;
 }
 
-form label {
-    display: block;
-    margin-top: 1rem;
-    margin-bottom: 0.25rem;
-    font-weight: 600;
-    font-size: 0.9rem;
-}
+/* -------------------------------------------------------------------- */
+/* Buttons ("stamps") -- squared corners, tracked capitals, not pill-shaped */
+/* -------------------------------------------------------------------- */
 
-form input,
-form select {
-    width: 100%;
-    padding: 0.5rem;
-    border: 1px solid #d3d7de;
-    border-radius: 4px;
-    font-size: 1rem;
-}
-
-form button,
-.btn {
+.stamp {
     display: inline-block;
-    margin-top: 1.5rem;
-    padding: 0.5rem 1.25rem;
-    background: #2f6feb;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+    font-family: var(--font-body);
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
     text-decoration: none;
-    font-size: 1rem;
+    color: #fff;
+    background: var(--crest);
+    border: none;
+    border-radius: 3px;
+    padding: 0.65rem 1.4rem;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
 }
 
-form button:hover,
-.btn:hover {
-    background: #2557c7;
+.stamp:hover {
+    background: var(--crest-dark);
 }
 
 .link-button {
     background: none;
     border: none;
-    color: #c0392b;
+    color: var(--crest);
     cursor: pointer;
     padding: 0;
     margin: 0;
-    font-size: 0.9rem;
-    text-decoration: underline;
-}
-
-.search-form {
-    display: flex;
-    gap: 0.5rem;
-    align-items: center;
-    margin-bottom: 1rem;
-}
-
-.search-form input {
-    flex: 1;
-    padding: 0.5rem;
-    border: 1px solid #d3d7de;
-    border-radius: 4px;
-}
-
-.data-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: #fff;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-}
-
-.data-table th,
-.data-table td {
-    text-align: left;
-    padding: 0.75rem 1rem;
-    border-bottom: 1px solid #eceef1;
-}
-
-.data-table th {
-    background: #f0f1f4;
     font-size: 0.85rem;
-    text-transform: uppercase;
-    color: #5a5f6a;
+    font-family: var(--font-body);
+    text-decoration: underline;
+    text-underline-offset: 2px;
 }
 
-.data-table .actions {
-    display: flex;
-    gap: 0.75rem;
-    align-items: center;
+/* -------------------------------------------------------------------- */
+/* Focus / motion -- accessibility floor                                  */
+/* -------------------------------------------------------------------- */
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+    outline: 2px solid var(--crest);
+    outline-offset: 2px;
 }
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition: none !important;
+    }
+}
+
+/* -------------------------------------------------------------------- */
+/* Flash messages -- stamped notices                                     */
+/* -------------------------------------------------------------------- */
 
 .flashes {
     list-style: none;
     padding: 0;
-    margin: 0 0 1rem;
+    margin: 0 0 1.5rem;
 }
 
 .flash {
-    padding: 0.75rem 1rem;
-    border-radius: 4px;
+    font-size: 0.9rem;
+    padding: 0.7rem 1rem;
+    border-left: 3px solid var(--success);
+    background: var(--success-bg);
     margin-bottom: 0.5rem;
-}
-
-.flash-success {
-    background: #e3f6e8;
-    color: #1c6b34;
+    color: var(--ink);
 }
 
 .flash-error {
-    background: #fbe7e6;
-    color: #a4231a;
+    border-left-color: var(--crest);
+    background: var(--error-bg);
 }
 
-dl {
-    display: grid;
-    grid-template-columns: 120px 1fr;
-    row-gap: 0.5rem;
+/* -------------------------------------------------------------------- */
+/* Admission slip (login)                                                 */
+/* -------------------------------------------------------------------- */
+
+.admission {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 2.5rem;
 }
 
-dt {
+.admission-card {
+    width: 100%;
+    max-width: 380px;
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-top: 3px solid var(--brass);
+    padding: 2.25rem 2rem;
+}
+
+.admission-card h1 {
+    font-size: 1.6rem;
+    margin-bottom: 1.75rem;
+}
+
+.admission-note {
+    margin-top: 1.25rem;
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+    font-family: var(--font-mono);
+}
+
+/* -------------------------------------------------------------------- */
+/* Form fields -- underline-only, "fill in the blank"                    */
+/* -------------------------------------------------------------------- */
+
+.field {
+    margin-bottom: 1.4rem;
+}
+
+.field-row {
+    display: flex;
+    gap: 1.25rem;
+}
+
+.field-row .field {
+    flex: 1;
+}
+
+.field-narrow {
+    max-width: 110px;
+}
+
+label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 0.4rem;
+}
+
+input,
+select {
+    width: 100%;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    color: var(--ink);
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--line);
+    padding: 0.4rem 0.1rem;
+    border-radius: 0;
+}
+
+input:focus,
+select:focus {
+    border-bottom: 1px solid var(--crest);
+}
+
+select {
+    padding-right: 1rem;
+}
+
+/* -------------------------------------------------------------------- */
+/* Page header + form/detail cards                                       */
+/* -------------------------------------------------------------------- */
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--line);
+}
+
+.form-card,
+.transcript {
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    padding: 2.25rem 2.5rem;
+    max-width: 520px;
+}
+
+/* -------------------------------------------------------------------- */
+/* Search slip                                                            */
+/* -------------------------------------------------------------------- */
+
+.search-slip {
+    margin-bottom: 1.75rem;
+}
+
+.search-slip label {
+    margin-bottom: 0.5rem;
+}
+
+.search-slip-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.search-slip-row input {
+    flex: 1;
+    max-width: 340px;
+}
+
+.search-slip-row button {
+    font-family: var(--font-body);
+    font-size: 0.8rem;
     font-weight: 600;
-    color: #5a5f6a;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    background: none;
+    border: 1px solid var(--ink);
+    color: var(--ink);
+    padding: 0.5rem 1.1rem;
+    border-radius: 3px;
+    cursor: pointer;
 }
 
-dd {
+.search-slip-row button:hover {
+    border-color: var(--crest);
+    color: var(--crest);
+}
+
+.search-slip-row .clear {
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+}
+
+/* -------------------------------------------------------------------- */
+/* Ledger table                                                           */
+/* -------------------------------------------------------------------- */
+
+.ledger-wrap {
+    overflow-x: auto;
+}
+
+.ledger {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--paper-raised);
+}
+
+.ledger th {
+    text-align: left;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    padding: 0.6rem 1rem;
+    border-bottom: 1px solid var(--ink);
+}
+
+.ledger td {
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid var(--line);
+    font-size: 0.92rem;
+}
+
+.ledger tbody tr:hover {
+    background: #fbf9f4;
+}
+
+.record-link {
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+}
+
+.record-link:hover {
+    color: var(--crest);
+    border-bottom-color: var(--crest);
+}
+
+.mono {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+}
+
+.muted {
+    color: var(--ink-soft);
+}
+
+.actions {
+    display: flex;
+    gap: 0.9rem;
+    align-items: center;
+    white-space: nowrap;
+}
+
+.actions a {
+    font-size: 0.85rem;
+    text-decoration: none;
+    border-bottom: 1px solid var(--line);
+}
+
+.actions a:hover {
+    color: var(--crest);
+    border-color: var(--crest);
+}
+
+.empty-row td {
+    text-align: center;
+    color: var(--ink-soft);
+    padding: 2.5rem 1rem;
+    font-style: italic;
+    font-family: var(--font-display);
+}
+
+/* Department tags -- muted tints cycling across a fixed 5-color set so any
+   number of departments gets a consistent, distinct look without hardcoding
+   specific department names. */
+
+.tag {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.02em;
+    padding: 0.2rem 0.55rem;
+    border-radius: 2px;
+}
+
+.tag-0 { background: #f4e7e7; color: #7c2d2d; }
+.tag-1 { background: #f2ecdd; color: #8a6a1f; }
+.tag-2 { background: #e8eee9; color: #3f6b4f; }
+.tag-3 { background: #e9edf2; color: #3d5570; }
+.tag-4 { background: #efe9f0; color: #6b4470; }
+
+/* -------------------------------------------------------------------- */
+/* Transcript (student detail) -- dotted leader rows                     */
+/* -------------------------------------------------------------------- */
+
+.transcript h1 {
+    margin-bottom: 1.75rem;
+}
+
+.leader-list {
+    margin: 0 0 2rem;
+}
+
+.leader-row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    padding: 0.55rem 0;
+    border-bottom: 1px dotted var(--line);
+}
+
+.leader-row dt {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    flex-shrink: 0;
+    width: 110px;
+}
+
+.leader-row dd {
     margin: 0;
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    text-align: right;
+    flex: 1;
+}
+
+.transcript-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.back-link {
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    text-decoration: none;
+}
+
+.back-link:hover {
+    color: var(--crest);
+}
+
+/* -------------------------------------------------------------------- */
+/* Responsive                                                             */
+/* -------------------------------------------------------------------- */
+
+@media (max-width: 640px) {
+    .letterhead {
+        padding: 1rem 1.25rem;
+    }
+
+    .account-nav .user {
+        display: none;
+    }
+
+    .container {
+        padding: 1.75rem 1.25rem 3rem;
+    }
+
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .form-card,
+    .transcript {
+        padding: 1.75rem 1.5rem;
+    }
+
+    .field-row {
+        flex-wrap: wrap;
+    }
+
+    .leader-row dd {
+        text-align: left;
+    }
 }
