@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Students{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h1>Students</h1>
+    <a class="btn" href="{{ url_for('students.new_student') }}">+ Add Student</a>
+</div>
+
+<form class="search-form" method="get">
+    <input type="text" name="q" value="{{ query }}" placeholder="Search by name or email">
+    <button type="submit">Search</button>
+    {% if query %}<a href="{{ url_for('students.list_students') }}">Clear</a>{% endif %}
+</form>
+
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Department</th>
+            <th>Year</th>
+            <th>CGPA</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for s in students %}
+        <tr>
+            <td><a href="{{ url_for('students.view_student', student_id=s.student_id) }}">{{ s.full_name }}</a></td>
+            <td>{{ s.email }}</td>
+            <td>{{ s.dept_name }}</td>
+            <td>{{ s.year }}</td>
+            <td>{{ s.cgpa }}</td>
+            <td class="actions">
+                <a href="{{ url_for('students.edit_student', student_id=s.student_id) }}">Edit</a>
+                <form method="post" action="{{ url_for('students.delete_student', student_id=s.student_id) }}" onsubmit="return confirm('Delete this student?');">
+                    <button type="submit" class="link-button">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="6">No students found.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

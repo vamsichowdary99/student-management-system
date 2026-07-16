@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}{{ student.full_name }}{% endblock %}
+{% block content %}
+<div class="card">
+    <h1>{{ student.full_name }}</h1>
+    <dl>
+        <dt>Email</dt><dd>{{ student.email }}</dd>
+        <dt>Phone</dt><dd>{{ student.phone or "-" }}</dd>
+        <dt>Department</dt><dd>{{ student.dept_name }}</dd>
+        <dt>Year</dt><dd>{{ student.year }}</dd>
+        <dt>CGPA</dt><dd>{{ student.cgpa }}</dd>
+        <dt>Added</dt><dd>{{ student.created_at }}</dd>
+    </dl>
+    <a class="btn" href="{{ url_for('students.edit_student', student_id=student.student_id) }}">Edit</a>
+    <a href="{{ url_for('students.list_students') }}">Back to list</a>
+</div>
+{% endblock %}

@@ -14,7 +14,12 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
 
-    # Blueprints (auth, student web pages, JSON API) are registered here
-    # once they exist -- see app/routes/*.
+    from app.routes.api_routes import bp as api_bp
+    from app.routes.auth_routes import bp as auth_bp
+    from app.routes.student_routes import bp as students_bp
+
+    app.register_blueprint(auth_bp)
+    app.register_blueprint(students_bp)
+    app.register_blueprint(api_bp)
 
     return app
