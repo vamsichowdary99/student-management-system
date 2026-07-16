@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+.git/
+.gitignore
+.env
+venv/
+.venv/
+tests/
+plans/
+README.md
+postman_collection.json
